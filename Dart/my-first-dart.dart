@@ -27,11 +27,11 @@ void main() {
   // want to return int number use ~/ operator
   z = score ~/ total;
   //or use .toInt() method
-  z = (score / total).toInt();
+  // z = (score / total).toInt();
 
   //test
-  // print(fname + ' ' + lname);
-  // print('age: $age'); // use $ for infer to variable
-  // print('my score : ${score + total}'); // use ${} for make operation
+  print(fname + ' ' + lname);
+  print('age: $age'); // use $ for infer to variable
+  print('my score : ${score + total}'); // use ${} for make operation
   print(z);
 }
