@@ -14,53 +14,58 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  var questoinIndex = 0;
+  final questions = const [
+    {
+      'questionText': 'What\'s your favorite color?',
+      'answer': ['Black', 'Red', 'Green', 'White']
+    },
+    {
+      'questionText': 'What\'s your favorite animal?',
+      'answer': ['Rabbit', 'Snake', 'Elephant', 'Cat']
+    },
+    {
+      'questionText': 'What\'s your favorite game?',
+      'answer': ['Valorant', 'Rov', 'Dead by day light', 'Fifa']
+    },
+  ];
+  var questionIndex = 0;
 
   void answerQuestion() {
     setState(() {
-      if (questoinIndex == 1) {
-        questoinIndex = 0;
+      if (questionIndex < questions.length) {
+        questionIndex = 0;
       } else {
-        questoinIndex = questoinIndex + 1;
+        questionIndex = questionIndex + 1;
       }
     });
-    print(questoinIndex);
+    print(questionIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    const questions = [
-      {
-        'questionText': 'What\'s your favorite color?',
-        'answer': ['Black', 'Red', 'Green', 'White']
-      },
-      {
-        'questionText': 'What\'s your favorite animal?',
-        'answer': ['Rabbit', 'Snake', 'Elephant', 'Cat']
-      },
-      {
-        'questionText': 'What\'s your favorite game?',
-        'answer': ['Valorant', 'Rov', 'Dead by day light', 'Fifa']
-      },
-    ];
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
         title: Text('My First App'),
       ),
-      body: Column(
-        children: <Widget>[
-          Question(
-            questionText: questions[questoinIndex]['questionText'],
-          ),
-          ...(questions[questoinIndex]['answer'] as List<String>).map((answer) {
-            return Answer(
-              selectHandler: answerQuestion,
-              answerText: answer,
-            );
-          }).toList()
-        ],
-      ), // body only put one widget
+      body: questionIndex < questions.length
+          ? Column(
+              children: <Widget>[
+                Question(
+                  questionText: questions[questionIndex]['questionText'],
+                ),
+                ...(questions[questionIndex]['answer'] as List<String>)
+                    .map((answer) {
+                  return Answer(
+                    selectHandler: answerQuestion,
+                    answerText: answer,
+                  );
+                }).toList()
+              ],
+            )
+          : Center(
+              child: Text('You did it!'),
+            ),
     ));
   }
 }
