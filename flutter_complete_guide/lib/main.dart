@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/result.dart';
 
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
+// import './question.dart';
+// import './answer.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +17,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  final questions = const [
+  final _questions = const [
     {
       'questionText': 'What\'s your favorite color?',
       'answer': ['Black', 'Red', 'Green', 'White']
@@ -28,17 +31,17 @@ class MyAppState extends State<MyApp> {
       'answer': ['Valorant', 'Rov', 'Dead by day light', 'Fifa']
     },
   ];
-  var questionIndex = 0;
+  var _questionIndex = 0;
 
-  void answerQuestion() {
+  void _answerQuestion() {
     setState(() {
-      if (questionIndex < questions.length) {
-        questionIndex = 0;
+      if (_questionIndex < _questions.length) {
+        _questionIndex = 0;
       } else {
-        questionIndex = questionIndex + 1;
+        _questionIndex = _questionIndex + 1;
       }
     });
-    print(questionIndex);
+    print(_questionIndex);
   }
 
   @override
@@ -48,24 +51,13 @@ class MyAppState extends State<MyApp> {
       appBar: AppBar(
         title: Text('My First App'),
       ),
-      body: questionIndex < questions.length
-          ? Column(
-              children: <Widget>[
-                Question(
-                  questionText: questions[questionIndex]['questionText'],
-                ),
-                ...(questions[questionIndex]['answer'] as List<String>)
-                    .map((answer) {
-                  return Answer(
-                    selectHandler: answerQuestion,
-                    answerText: answer,
-                  );
-                }).toList()
-              ],
+      body: _questionIndex < _questions.length
+          ? Quiz(
+              answerQuestion: _answerQuestion,
+              questionIndex: _questionIndex,
+              questions: _questions,
             )
-          : Center(
-              child: Text('You did it!'),
-            ),
+          : Result(),
     ));
   }
 }

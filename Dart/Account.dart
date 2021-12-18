@@ -4,7 +4,7 @@ class Account {
   double _balance;
 
   // Constructor
-  Account(this._id, this._balance, this._username);
+  Account(this._id, this._username, this._balance);
 
   // setter
 
