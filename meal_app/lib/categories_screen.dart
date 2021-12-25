@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import './dummy_data.dart';
@@ -13,6 +14,7 @@ class CategoriesScreen extends StatelessWidget {
         title: const Text('Meals App'),
       ),
       body: GridView(
+        padding: const EdgeInsets.all(25),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
           childAspectRatio: 3 / 2,
@@ -21,6 +23,7 @@ class CategoriesScreen extends StatelessWidget {
         ),
         children: dummyCategories.map((catData) {
           return CategoryItem(
+            catData.id,
             catData.title,
             catData.color,
           );
