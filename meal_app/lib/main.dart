@@ -3,12 +3,48 @@ import 'package:meal_app/screens/category_meals_screen.dart';
 import 'package:meal_app/screens/filter_screen.dart';
 import 'package:meal_app/screens/meal_detail_screen.dart';
 import 'package:meal_app/screens/tab_screen.dart';
-import 'screens/categories_screen.dart';
+import './dummy_data.dart';
+import './models/meal.dart';
+// import 'screens/categories_screen.dart';
 
 void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Map<String, bool> _filter = {
+    'gluten': false,
+    'lactose': false,
+    'vegan': false,
+    'vegetarian': false,
+  };
+  List<Meal> _availableMeal = dummyMeals;
+
+  void _setFilters(Map<String, bool> filterData) {
+    setState(() {
+      _filter = filterData;
+      _availableMeal = dummyMeals.where((meal) {
+        if (_filter['gluten']! && !meal.isGlutenFree) {
+          return false;
+        }
+        if (_filter['lactose']! && !meal.isLactoseFree) {
+          return false;
+        }
+        if (_filter['vegan']! && !meal.isVegan) {
+          return false;
+        }
+        if (_filter['vegetarian']! && !meal.isVegetarian) {
+          return false;
+        }
+        return true;
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +68,10 @@ class MyApp extends StatelessWidget {
       initialRoute: '/..', //default is '/'
       routes: {
         '/..': (ctx) => const TabScreen(),
-        CategoryMealsScreen.routeName: (ctx) => const CategoryMealsScreen(),
+        CategoryMealsScreen.routeName: (ctx) =>
+            CategoryMealsScreen(_availableMeal),
         MealDetailScreen.routeName: (ctx) => const MealDetailScreen(),
-        FilterScreen.routeName: (ctx) => const FilterScreen(),
+        FilterScreen.routeName: (ctx) => FilterScreen(_filter, _setFilters),
       },
       onGenerateRoute: (settings) {},
       onUnknownRoute: (settings) {},
